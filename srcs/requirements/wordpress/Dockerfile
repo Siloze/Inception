@@ -37,6 +37,7 @@ RUN chmod +x wp-cli.phar
 RUN mv wp-cli.phar /usr/local/bin/wp
 
 # Configuration de Wordpress
+COPY conf/wp-config.php /tmp/wp-config.php
 COPY tools/auto_config.sh /tmp/auto_config.sh
 ENTRYPOINT ["sh", "/tmp/auto_config.sh"]
 

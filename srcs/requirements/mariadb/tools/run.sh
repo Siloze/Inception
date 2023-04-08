@@ -1,6 +1,11 @@
 #!/bin/bash
-
-service mysql start;
+/etc/init.d/mysql start
+ls /var/log/mysql/
+touch toto.txt
+echo salut a tous > toto.txt
+cat toto.txt
+cat /var/log/mysql/error.log
+sleep 5
 
 # Creation de la table
 mysql -e "CREATE DATABASE IF NOT EXISTS \`${SQL_DATABASE}\`;"
@@ -18,7 +23,7 @@ mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${SQL_ROOT_PASSWORD}';"
 mysql -e "FLUSH PRIVILEGES;"
 
 # Redemarrage de mysql
-mysqladmin -u root -p$SQL_ROOT_PASSWORD shutdown
+#mysqladmin -u root -p$SQL_ROOT_PASSWORD shutdown
 
 # Execution recommandé de mysql
-exec mysqld_safe
+#exec mysqld_safe

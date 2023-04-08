@@ -14,15 +14,12 @@ else
 	mkdir /run/php
 fi
 
+cd /var/www/wordpress
 # Pour eviter de reconfigurer wordpress a chaque fois
-FILE=/var/www/wordpress/wp-config.sh
+FILE=/var/www/wordpress/wp-config.php
 if [ -f "$FILE" ]; then
 	echo "$FILE exists."
 else
 	echo "$FILE does not exist."
-	wp config create	--allow-root \
-					--dbname=$SQL_DATABASE \
-					--dbuser=$SQL_USER \
-					--dbpass=$SQL_PASSWORD \
-					--dbhost=mariadb:3306 --path='/var/www/wordpress'
+	mv /tmp/wp-config.php /var/www/wordpress/wp-config.php
 fi

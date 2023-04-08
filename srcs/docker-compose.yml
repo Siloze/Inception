@@ -40,24 +40,25 @@ services:
       context: requirements/wordpress
       dockerfile: Dockerfile
     depends_on: # WordPress démarrera uniquement après MariaDB (sinon il ne pourra pas configurer la base de données...)
-      - mariadb
+      mariadb:
+        condition: service_started
     restart: on-failure
     expose: 
       - "9000"
 
 volumes:
-  wordpress:
-    driver: local # ici nous stockons le volume en local
-    driver_opts:
-      type: 'none' # aucun type spécifique
-      o: 'bind'
-      device: '/${HOME}/Desktop/Inception/wordpress' #Ou stocker le dossier sur votre ordinateur en local
   mariadb:
     driver: local
     driver_opts:
       type: 'none' 
       o: 'bind' # Les Bind Mounts sont des volumes qui se montent sur un chemin d'accès à l'hôte, et ils peuvent être modifiés par d'autres processus en dehors de docker.
       device: '/${HOME}/Desktop/Inception/mariadb' #Ou stocker le dossier sur votre ordinateur en local
+  wordpress:
+    driver: local # ici nous stockons le volume en local
+    driver_opts:
+      type: 'none' # aucun type spécifique
+      o: 'bind'
+      device: '/${HOME}/Desktop/Inception/wordpress' #Ou stocker le dossier sur votre ordinateur en local
 
 networks:
   inception:
