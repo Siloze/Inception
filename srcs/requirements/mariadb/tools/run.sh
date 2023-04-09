@@ -1,11 +1,19 @@
 #!/bin/bash
-/etc/init.d/mysql start
-ls /var/log/mysql/
-touch toto.txt
-echo salut a tous > toto.txt
-cat toto.txt
-cat /var/log/mysql/error.log
-sleep 5
+if [ -d "/var/lib/mysql/mysql" ]; then
+    echo "Base de donnée déjà existante."
+else
+    echo "Configuration de la base de donnée..."
+    mysql_install_db \
+    --user=mysql \
+    --datadir=/var/lib/mysql  \
+    --port=3306 \
+    --socket=/run/mysqld/mysqld.sock \
+    --bind_address=* > /dev/null
+fi
+
+#     --basedir=/usr \
+
+service mysql start
 
 # Creation de la table
 mysql -e "CREATE DATABASE IF NOT EXISTS \`${SQL_DATABASE}\`;"
@@ -23,7 +31,8 @@ mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${SQL_ROOT_PASSWORD}';"
 mysql -e "FLUSH PRIVILEGES;"
 
 # Redemarrage de mysql
+mysqladmin --port=3308 --user=root --password=lepass shutdown
 #mysqladmin -u root -p$SQL_ROOT_PASSWORD shutdown
 
 # Execution recommandé de mysql
-#exec mysqld_safe
+exec mysqld_safe
