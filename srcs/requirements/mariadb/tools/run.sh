@@ -11,9 +11,8 @@ else
     --bind_address=* > /dev/null
 fi
 
-#     --basedir=/usr \
-
 service mysql start
+
 
 # Creation de la table
 mysql -e "CREATE DATABASE IF NOT EXISTS \`${SQL_DATABASE}\`;"
@@ -31,8 +30,7 @@ mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${SQL_ROOT_PASSWORD}';"
 mysql -e "FLUSH PRIVILEGES;"
 
 # Redemarrage de mysql
-mysqladmin --port=3308 --user=root --password=lepass shutdown
-#mysqladmin -u root -p$SQL_ROOT_PASSWORD shutdown
+mysqladmin -u root -p$SQL_ROOT_PASSWORD shutdown
 
 # Execution recommandé de mysql
 exec mysqld_safe
