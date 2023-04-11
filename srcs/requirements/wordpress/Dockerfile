@@ -17,30 +17,27 @@ RUN apt install -y php7.3 \
 					php-mysql \
 					mariadb-client
 
-# On télécharge Wordpress
-RUN wget https://fr.wordpress.org/wordpress-6.1.1-fr_FR.tar.gz -P /var/www
-# On le décompresse et supprime le zip
-RUN cd /var/www && tar -xzf wordpress-6.1.1-fr_FR.tar.gz && rm wordpress-6.1.1-fr_FR.tar.gz
+# # On télécharge Wordpress
+# RUN wget https://fr.wordpress.org/wordpress-6.1.1-fr_FR.tar.gz -P /var/www
+# # On le décompresse et supprime le zip
+# RUN cd /var/www && tar -xzf wordpress-6.1.1-fr_FR.tar.gz && rm wordpress-6.1.1-fr_FR.tar.gz
 
-# On ajoute les droits
-RUN chown -R root:root /var/www/wordpress
 
-# On deplace le fichier de configuration
-COPY conf/php.ini /etc/php/7.3/cli/php.ini
-COPY conf/php.ini /etc/php/7.3/fpm/php.ini
+# # Installation du CLI pour configurer wordpress
+# RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 
-# Installation du CLI pour configurer wordpress
-RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+# On deplace le fichier de configuration de PHP
+COPY conf/www.conf /etc/php/7.3/fpm/pool.d/www.conf
 
-# Configuration du CLI
-RUN chmod +x wp-cli.phar
-RUN mv wp-cli.phar /usr/local/bin/wp
+# # Configuration du CLI
+# RUN chmod +x wp-cli.phar
+# RUN mv wp-cli.phar /usr/local/bin/wp
 
 # Configuration de Wordpress
 COPY conf/wp-config.php /tmp/wp-config.php
 COPY tools/auto_config.sh /tmp/auto_config.sh
 ENTRYPOINT ["sh", "/tmp/auto_config.sh"]
 
-# Demarrage de PHP
-# RUN /usr/sbin/php-fpm7.3 -F
-RUN /etc/init.d/php7.3-fpm start
+#ENTRYPOINT ["tail", "-f", "/dev/null"]
+
+

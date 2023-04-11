@@ -2,6 +2,8 @@
 DOCKER_COMPOSE = docker-compose
 DOCKER_COMPOSE_FOLDER = srcs
 DATABASE_FOLDER = $(HOME)/Desktop/Inception/mariadb
+WORDPRESS_FOLDER = $(HOME)/Desktop/Inception/wordpress
+
 # Commandes
 
 start:
@@ -15,7 +17,12 @@ stop:
 clean:
 	@cd $(DATABASE_FOLDER) && \
 	rm -rf ./*
+	@cd $(WORDPRESS_FOLDER) && \
+	rm -rf ./*
 
+re:
+	@make stop && \
+	make start 
 .PHONY: start stop
 
 # Par défaut, lancer la commande up
