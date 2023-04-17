@@ -12,8 +12,8 @@ services:
     volumes:                        # Voir plus bas
       - mariadb:/var/lib/mysql
     restart: unless-stopped         # redémarre tant qu'il n'est pas stoppé 
-    expose:                         # le port à exposer
-      - "3306"
+    ports:
+      - "3306:3306"
   nginx:
     container_name: nginx
     volumes:
