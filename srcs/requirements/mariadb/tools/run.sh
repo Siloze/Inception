@@ -3,7 +3,7 @@
 #  if [ ! -f "/var/lib/mysql/tc.log" ]; then
     echo "Configuration de la base de donnée..."
 
-    #mysql_install_db --basedir=/usr --datadir='/var/lib/mysql' --user=mysql --pid-file='/run/mysqld/mysqld.pid' --socket='/run/mysqld/mysqld.sock' --port=3306 --bind-address=* --skip-networking=0
+    mysql_install_db
 
     service mysql start
 
@@ -16,7 +16,7 @@
 
     # Creation de l'utilisateur
     echo "Creation de l'utilisateur..."
-    mysql -e "CREATE USER IF NOT EXISTS \`${SQL_USER}\`@'%' IDENTIFIED BY '${SQL_PASSWORD}';"
+    mysql -e "CREATE USER IF NOT EXISTS \`${SQL_USER}\`@'localhost' IDENTIFIED BY '${SQL_PASSWORD}';"
     sleep 1
 
     # Donner tous les droit a un user
