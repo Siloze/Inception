@@ -23,15 +23,15 @@ RUN apt install -y php7.3 \
 # RUN cd /var/www && tar -xzf wordpress-6.1.1-fr_FR.tar.gz && rm wordpress-6.1.1-fr_FR.tar.gz
 
 
-# # Installation du CLI pour configurer wordpress
-# RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+# Installation du CLI pour configurer wordpress
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 
 # On deplace le fichier de configuration de PHP
 COPY conf/www.conf /etc/php/7.3/fpm/pool.d/www.conf
 
 # # Configuration du CLI
-# RUN chmod +x wp-cli.phar
-# RUN mv wp-cli.phar /usr/local/bin/wp
+ RUN chmod +x wp-cli.phar
+ RUN mv wp-cli.phar /usr/local/bin/wp
 
 # Configuration de Wordpress
 COPY conf/wp-config.php /tmp/wp-config.php

@@ -1,52 +1,49 @@
 #!/bin/bash
-if [ ! -d "/var/lib/mysql/mysql" ]; then
-    echo "[SETUP] Configuration de la base de donnée..."
-    mysql_install_db \
-    --user=mysql \
-    --datadir=/var/lib/mysql  \
-    --port=3306 \
-    --socket=/run/mysqld/mysqld.sock \
-    --bind_address=* > /dev/null 2>&1
+#!/bin/bash
+#  if [ ! -f "/var/lib/mysql/tc.log" ]; then
+    echo "Configuration de la base de donnée..."
 
-    echo "[SETUP] Démarrage de mysql..."
+    #mysql_install_db --basedir=/usr --datadir='/var/lib/mysql' --user=mysql --pid-file='/run/mysqld/mysqld.pid' --socket='/run/mysqld/mysqld.sock' --port=3306 --bind-address=* --skip-networking=0
+
     service mysql start
 
+    sleep 1
     # Creation de la table
-    echo "[SETUP] Creation de la base donnée..."
+    mysql -u root < /tmp/wordpress.sql
+    echo "Creation de la base de donnée..."
     mysql -e "CREATE DATABASE IF NOT EXISTS \`${SQL_DATABASE}\`;"
     sleep 1
 
     # Creation de l'utilisateur
-    echo "[SETUP] Creation de l'utilisateur..."
-    mysql -e "CREATE USER IF NOT EXISTS \`${SQL_USER}\`@'localhost' IDENTIFIED BY '${SQL_PASSWORD}';"
+    echo "Creation de l'utilisateur..."
+    mysql -e "CREATE USER IF NOT EXISTS \`${SQL_USER}\`@'%' IDENTIFIED BY '${SQL_PASSWORD}';"
     sleep 1
 
     # Donner tous les droit a un user
-    echo "[SETUP] Modification des privilèges..."
-    mysql -e "GRANT ALL PRIVILEGES ON \`${SQL_DATABASE}\`.* TO \`${SQL_USER}\`@'localhost' IDENTIFIED BY '${SQL_PASSWORD}';"
+    echo "Donner tous les droit a l'utilisateur..."
+    mysql -e "GRANT ALL PRIVILEGES ON \`${SQL_DATABASE}\`.* TO \`${SQL_USER}\`@'%' IDENTIFIED BY '${SQL_PASSWORD}';"
     sleep 1
 
     # Modification de l'utilisateur root
-    echo "[SETUP] Modification du mot de passe root..."
+    echo "Modification de l'utilisateur root..."
     mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${SQL_ROOT_PASSWORD}';"
     sleep 1
 
     # On actualise les privilèges
-    echo "[SETUP] Actualisation des privilèges..."
-    mysql -e "FLUSH PRIVILEGES;" -u root -p"$SQL_ROOT_PASSWORD"
+    echo "Actualisation des privilèges..."
+    mysql -e "FLUSH PRIVILEGES;" -u root -p$SQL_ROOT_PASSWORD
     sleep 1
 
     # Redemarrage de mysql
-    echo "[SETUP] Redemarrage de mysql..."
-    mysqladmin --user=root --password=$SQL_ROOT_PASSWORD shutdown
+    echo "Redemarrage de mysql..."
+    mysqladmin -u root -p$SQL_ROOT_PASSWORD shutdown
+    sleep 1
+    echo "Configuration de la base de donnée terminée."
+# else
+#      echo "Base de donnée déjà existante."
+# fi
 
-    echo "[SETUP] Configuration de la base de donnée terminée."
-else
-    echo "[SETUP] Base de donnée déjà existante."
-fi
-
-sed -i 's/skip-networking/# skip-networking/g' /etc/my.cnf.d/mariadb-server.cnf
 
 # Execution recommandé de mysql
-echo "---Démarrage du service MariaDB---"
-exec mysqld_safe
+#exec mysqld_safe
+exec mysqld_safe --basedir=/usr --datadir='/var/lib/mysql' --user=mysql --pid-file='/run/mysqld/mysqld.pid' --socket='/run/mysqld/mysqld.sock' --port=3306 --bind-address=* --skip-networking=0

@@ -28,7 +28,7 @@ fi
 END=$(date +%s)
 DIFF=$(( $END - $START ))
 
-if [ "$DIFF" -lt 10 ]; then
+if [ "$DIFF" -lt 15 ]; then
 	sleep $((10 - $DIFF))
 fi
 
@@ -41,7 +41,13 @@ fi
 FILE=/var/www/wordpress/wp-config.php
 if [ ! -f "$FILE" ]; then
 	echo "[SETUP] Configuration de Wordpress..."
-	mv /tmp/wp-config.php /var/www/wordpress/wp-config.php
+	wp config create	--allow-root \
+											--dbname=$SQL_DATABASE \
+											--dbuser=$SQL_USER \
+											--dbpass=$SQL_PASSWORD \
+											--dbhost=mariadb:3306 --path='/var/www/wordpress'
+	# mv /tmp/wp-config.php /var/www/wordpress/wp-config.php
+	wp core install --url=localhost --title="Wordpress" --admin_user=$SQL_ADMIN_USER --admin_password=$SQL_ADMIN_PASSWORD --admin_email=$SQL_ADMIN_EMAIL --skip-email --allow-root --path='/var/www/wordpress'
 fi
 
 # Demarrage de PHP

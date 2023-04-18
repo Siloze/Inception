@@ -1,10 +1,15 @@
 # Variables
+DATABASE = mariadb
+WEBSITE = wordpress
 DOCKER_COMPOSE = docker-compose
 DOCKER_COMPOSE_FOLDER = srcs
-DATABASE_FOLDER = $(HOME)/Desktop/Inception/mariadb
-WORDPRESS_FOLDER = $(HOME)/Desktop/Inception/wordpress
-
+FILES_FOLDER = $(HOME)/Desktop/Inception
 # Commandes
+
+build: 
+	mkdir -p $(FILES_FOLDER)
+	mkdir $(FILES_FOLDER)/$(DATABASE)
+	mkdir $(FILES_FOLDER)/$(WEBSITE)
 
 start:
 	@cd $(DOCKER_COMPOSE_FOLDER) && \
@@ -14,15 +19,14 @@ stop:
 	@cd $(DOCKER_COMPOSE_FOLDER) && \
 	$(DOCKER_COMPOSE) down
 
-clean:
-	@cd $(DATABASE_FOLDER) && \
-	rm -rf ./*
-	@cd $(WORDPRESS_FOLDER) && \
-	rm -rf ./*
+clean:  
+	rm -rf $(FILES_FOLDER)/$(DATABASE)/* && \
+	rm -rf $(FILES_FOLDER)/$(WEBSITE)/*
 
 re:
 	@make stop && \
-	make start 
+	make start
+ 
 .PHONY: start stop
 
 # Par défaut, lancer la commande up
