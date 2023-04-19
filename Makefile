@@ -12,6 +12,7 @@ build:
 	mkdir $(FILES_FOLDER)/$(WEBSITE)
 
 start:
+	@if [ ! -d $(FILES_FOLDER)/$(DATABASE) ]; then make build; fi
 	@cd $(DOCKER_COMPOSE_FOLDER) && \
 	$(DOCKER_COMPOSE) up --build
 
@@ -20,8 +21,13 @@ stop:
 	$(DOCKER_COMPOSE) down
 
 clean:  
-	rm -rf $(FILES_FOLDER)/$(DATABASE)/* && \
+	rm -rf $(FILES_FOLDER)/$(DATABASE)/*
 	rm -rf $(FILES_FOLDER)/$(WEBSITE)/*
+
+fclean:  clean
+	@rm -rf $(FILES_FOLDER)
+	@docker volume rm srcs_mariadb
+	@docker volume rm srcs_wordpress
 
 re:
 	@make stop && \
@@ -29,5 +35,4 @@ re:
  
 .PHONY: start stop
 
-# Par défaut, lancer la commande up
-.DEFAULT_GOAL := start
+.DEFAULT_GOAL :=  start

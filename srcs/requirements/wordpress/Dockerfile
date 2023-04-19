@@ -34,7 +34,6 @@ COPY conf/www.conf /etc/php/7.3/fpm/pool.d/www.conf
  RUN mv wp-cli.phar /usr/local/bin/wp
 
 # Configuration de Wordpress
-COPY conf/wp-config.php /tmp/wp-config.php
 COPY tools/auto_config.sh /tmp/auto_config.sh
 ENTRYPOINT ["sh", "/tmp/auto_config.sh"]
 
