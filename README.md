@@ -5,7 +5,7 @@ Inception est un projet de l'école 42 qui consiste à créer un petit site web 
 ## **Architecture du projet**
 Le projet Inception est composé de trois conteneurs Docker :
 
-- nginx : le conteneur Docker pour le serveur web. Il est utilisé pour servir les pages web statiques et pour diriger les requêtes HTTP vers les conteneurs de l'application.
+- nginx : le conteneur Docker pour le serveur web. Il est utilisé pour servir les pages web statiques et pour diriger les requêtes HTTPS vers les conteneurs de l'application.
 - mariadb : le conteneur Docker pour la base de données. Il est utilisé pour stocker les données de l'application.
 - wordpress-phpfpm : le conteneur Docker pour l'application web. Il contient l'application WordPress qui est servie par le serveur web.
 
