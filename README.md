@@ -34,5 +34,5 @@ nginx/nginx.conf : ce fichier définit la configuration NGINX pour le serveur we
 php-fpm/Dockerfile : ce fichier définit la configuration de l'image Docker pour PHP-FPM.
 mariaDB/init.sql : ce fichier contient les instructions SQL pour créer la base de données et importer les données de test.
 
-Auteurs
+## **Auteur**
 Ce projet a été réalisé par Siloze dans le cadre du projet Incpetion de l'école 42.
