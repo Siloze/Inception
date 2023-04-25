@@ -1,9 +1,9 @@
 # Variables
 DATABASE = mariadb
 WEBSITE = wordpress
-DOCKER_COMPOSE = docker-compose
+DOCKER_COMPOSE = sudo docker compose
 DOCKER_COMPOSE_FOLDER = srcs
-FILES_FOLDER = $(HOME)/Desktop/Inception
+FILES_FOLDER = $(HOME)/data
 # Commandes
 
 build: 
@@ -18,16 +18,17 @@ start:
 
 stop:
 	@cd $(DOCKER_COMPOSE_FOLDER) && \
+	$(DOCKER_COMPOSE) stop && \
 	$(DOCKER_COMPOSE) down
 
 clean:  
-	rm -rf $(FILES_FOLDER)/$(DATABASE)/*
-	rm -rf $(FILES_FOLDER)/$(WEBSITE)/*
+	sudo rm -rf $(FILES_FOLDER)/$(DATABASE)/*
+	sudo rm -rf $(FILES_FOLDER)/$(WEBSITE)/*
 
 fclean:  clean
-	@rm -rf $(FILES_FOLDER)
-	@docker volume rm srcs_mariadb
-	@docker volume rm srcs_wordpress
+	@sudo rm -rf $(FILES_FOLDER)
+	@sudo docker volume rm srcs_mariadb
+	@sudo docker volume rm srcs_wordpress
 
 re:
 	@make stop && \

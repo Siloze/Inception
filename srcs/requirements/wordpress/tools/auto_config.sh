@@ -10,7 +10,6 @@ if [ ! -d "/run/php" ]; then
 	mkdir /run/php
 fi
 
-START=$(date +%s)
 #On télécharge Wordpress
 if [ -f "/var/www/wordpress/index.php" ]; then
 	echo "[INSTALL] Installation de Wordpress déjà existante."
@@ -26,29 +25,30 @@ else
 
 	echo "[INSTALL] Installation de Wordpress terminée. [INSTALL]"
 fi
-
-END=$(date +%s)
-DIFF=$(( $END - $START ))
-
-if [ "$DIFF" -lt 15 ]; then
-	sleep $((10 - $DIFF))
-fi
+sleep 15
 
 # Pour eviter de reconfigurer wordpress a chaque fois
 if [ ! -f "/var/www/wordpress/wp-config.php" ]; then
 	echo "[SETUP] Configuration de Wordpress..."
 	wp config create	--allow-root \
-							--dbname=$SQL_DATABASE \
-							--dbuser=$SQL_USER \
-							--dbpass=$SQL_PASSWORD \
-							--dbhost=mariadb:3306 --path='/var/www/wordpress'
+				--dbname=$SQL_DATABASE \
+				--dbuser=$SQL_USER \
+				--dbpass=$SQL_PASSWORD \
+				--dbhost=mariadb:3306 \
+			       	--path='/var/www/wordpress'
+	
 	wp core install		--url=localhost \
-							--title="Wordpress" \
-							--admin_user=$SQL_ADMIN_USER \
-							--admin_password=$SQL_ADMIN_PASSWORD \
-							--admin_email=$SQL_ADMIN_EMAIL \
-							--skip-email \
-							--allow-root --path='/var/www/wordpress'
+				--title="Wordpress" \
+				--admin_user=$SQL_ADMIN_USER \
+				--admin_password=$SQL_ADMIN_PASSWORD \
+				--admin_email=$SQL_ADMIN_EMAIL \
+				--skip-email \
+				--allow-root \
+			       	--path='/var/www/wordpress'
+	wp user create	$SQL_USER $SQL_EMAIL --user_pass=$SQL_PASSWORD \
+	       		--allow-root \
+			--path='/var/www/wordpress' \
+			--url=localhost
 fi
 
 # Demarrage de PHP
