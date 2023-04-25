@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# auto_config.sh
-# This script is used to auto configure wordpress
-
-# On attend que la databse est bien demarrée
-
 # Pour eviter une eventuelle erreur de PHP
 if [ ! -d "/run/php" ]; then
 	mkdir /run/php
@@ -25,6 +20,7 @@ else
 
 	echo "[INSTALL] Installation de Wordpress terminée. [INSTALL]"
 fi
+# On attend que la databse est bien demarrée
 sleep 15
 
 # Pour eviter de reconfigurer wordpress a chaque fois
