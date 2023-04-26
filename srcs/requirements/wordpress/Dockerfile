@@ -1,18 +1,10 @@
 
 FROM debian:buster
 
-# On met à jour le container
-RUN apt update -y
-RUN apt upgrade -y
-
-# On install wget pour Wordpress
-RUN apt-get -y install wget
-
-# On install vim
-RUN apt install vim -y
-
-# On install PHP
-RUN apt install -y php7.3 \
+RUN apt update -y ; \
+	apt upgrade -y ; \
+	apt-get -y install wget ; \
+	apt install -y php7.3 \
 			php-fpm \
 			php-mysql \
 			mariadb-client
