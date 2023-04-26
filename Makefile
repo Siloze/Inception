@@ -19,29 +19,29 @@ SPINNER = |/-\|
 
 # Commands
 build:
-	@echo "$(CYAN)Creating data folders...$(RESET)"
+	@echo "$(CYAN)---Creating data folders...---$(RESET)"
+	@mkdir -p $(FILES_FOLDER)
 	@echo "$(YELLOW)Creating $(DATABASE) folder...$(RESET)"
-	mkdir -p $(FILES_FOLDER)
-	mkdir $(FILES_FOLDER)/$(DATABASE)
+	@mkdir $(FILES_FOLDER)/$(DATABASE)
 	@echo "$(GREEN)$(DATABASE) folder created successfully!$(RESET)"
 	@echo "$(YELLOW)Creating $(WEBSITE) folder...$(RESET)"
-	mkdir $(FILES_FOLDER)/$(WEBSITE)
+	@mkdir $(FILES_FOLDER)/$(WEBSITE)
 	@echo "$(GREEN)$(WEBSITE) folder created successfully!$(RESET)"
 
 start:
 	@if [ ! -d $(FILES_FOLDER)/$(DATABASE) ]; then make build; fi
-	@echo "$(CYAN)Starting docker containers...$(RESET)"
+	@echo "$(CYAN)---Starting docker containers...---$(RESET)"
 	@cd $(DOCKER_COMPOSE_FOLDER) && \
 	$(DOCKER_COMPOSE) up --build
 
 stop:
-	@echo "$(CYAN)Stopping docker containers...$(RESET)"
+	@echo "$(CYAN)---Stopping docker containers...---$(RESET)"
 	@cd $(DOCKER_COMPOSE_FOLDER) && \
 	$(DOCKER_COMPOSE) stop && \
 	$(DOCKER_COMPOSE) down
 
 clean:
-	@echo "$(CYAN)Cleaning data folders...$(RESET)"
+	@echo "$(CYAN)---Cleaning data folders...---$(RESET)"
 	@echo "$(YELLOW)Cleaning $(DATABASE) folder...$(RESET)"
 	@sudo rm -rf $(FILES_FOLDER)/$(DATABASE)/*
 	@echo "$(GREEN)$(DATABASE) folder cleaned successfully!$(RESET)"
@@ -50,7 +50,7 @@ clean:
 	@echo "$(GREEN)$(WEBSITE) folder cleaned successfully!$(RESET)"
 
 fclean:  clean
-	@echo "$(CYAN)Removing data folders and volumes...$(RESET)"
+	@echo "$(CYAN)---Removing data folders and volumes...---$(RESET)"
 	@sudo rm -rf $(FILES_FOLDER)
 	@echo "$(YELLOW)Removing $(DATABASE) volume...$(RESET)"
 	@sudo docker volume rm srcs_mariadb
