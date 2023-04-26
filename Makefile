@@ -1,3 +1,5 @@
+MAKEFLAGS += --silent
+
 # Variables
 DATABASE = mariadb
 WEBSITE = wordpress
@@ -19,49 +21,49 @@ SPINNER = |/-\|
 
 # Commands
 build:
-	@echo "$(CYAN)---Creating data folders...---$(RESET)"
-	@mkdir -p $(FILES_FOLDER)
-	@echo "$(YELLOW)Creating $(DATABASE) folder...$(RESET)"
-	@mkdir $(FILES_FOLDER)/$(DATABASE)
-	@echo "$(GREEN)$(DATABASE) folder created successfully!$(RESET)"
-	@echo "$(YELLOW)Creating $(WEBSITE) folder...$(RESET)"
-	@mkdir $(FILES_FOLDER)/$(WEBSITE)
-	@echo "$(GREEN)$(WEBSITE) folder created successfully!$(RESET)"
+	echo "$(CYAN)---Creating data folders...---$(RESET)"
+	mkdir -p $(FILES_FOLDER)
+	echo "$(YELLOW)Creating $(DATABASE) folder...$(RESET)"
+	mkdir $(FILES_FOLDER)/$(DATABASE)
+	echo "$(GREEN)$(DATABASE) folder created successfully!$(RESET)"
+	echo "$(YELLOW)Creating $(WEBSITE) folder...$(RESET)"
+	mkdir $(FILES_FOLDER)/$(WEBSITE)
+	echo "$(GREEN)$(WEBSITE) folder created successfully!$(RESET)"
 
 start:
-	@if [ ! -d $(FILES_FOLDER)/$(DATABASE) ]; then make build; fi
-	@echo "$(CYAN)---Starting docker containers...---$(RESET)"
-	@cd $(DOCKER_COMPOSE_FOLDER) && \
+	if [ ! -d $(FILES_FOLDER)/$(DATABASE) ]; then make build; fi
+	echo "$(CYAN)---Starting docker containers...---$(RESET)"
+	cd $(DOCKER_COMPOSE_FOLDER) && \
 	$(DOCKER_COMPOSE) up --build
 
 stop:
-	@echo "$(CYAN)---Stopping docker containers...---$(RESET)"
-	@cd $(DOCKER_COMPOSE_FOLDER) && \
+	echo "$(CYAN)---Stopping docker containers...---$(RESET)"
+	cd $(DOCKER_COMPOSE_FOLDER) && \
 	$(DOCKER_COMPOSE) stop && \
 	$(DOCKER_COMPOSE) down
 
 clean:
-	@echo "$(CYAN)---Cleaning data folders...---$(RESET)"
-	@echo "$(YELLOW)Cleaning $(DATABASE) folder...$(RESET)"
-	@sudo rm -rf $(FILES_FOLDER)/$(DATABASE)/*
-	@echo "$(GREEN)$(DATABASE) folder cleaned successfully!$(RESET)"
-	@echo "$(YELLOW)Cleaning $(WEBSITE) folder...$(RESET)"
-	@sudo rm -rf $(FILES_FOLDER)/$(WEBSITE)/*
-	@echo "$(GREEN)$(WEBSITE) folder cleaned successfully!$(RESET)"
+	echo "$(CYAN)---Cleaning data folders...---$(RESET)"
+	echo "$(YELLOW)Cleaning $(DATABASE) folder...$(RESET)"
+	sudo rm -rf $(FILES_FOLDER)/$(DATABASE)/*
+	echo "$(GREEN)$(DATABASE) folder cleaned successfully!$(RESET)"
+	echo "$(YELLOW)Cleaning $(WEBSITE) folder...$(RESET)"
+	sudo rm -rf $(FILES_FOLDER)/$(WEBSITE)/*
+	echo "$(GREEN)$(WEBSITE) folder cleaned successfully!$(RESET)"
 
 fclean:  clean
-	@echo "$(CYAN)---Removing data folders and volumes...---$(RESET)"
-	@sudo rm -rf $(FILES_FOLDER)
-	@echo "$(YELLOW)Removing $(DATABASE) volume...$(RESET)"
-	@sudo docker volume rm srcs_mariadb
-	@echo "$(GREEN)$(DATABASE) volume removed successfully!$(RESET)"
-	@echo "$(YELLOW)Removing $(WEBSITE) volume...$(RESET)"
-	@sudo docker volume rm srcs_wordpress
-	@echo "$(GREEN)$(WEBSITE) volume removed successfully!$(RESET)"
+	echo "$(CYAN)---Removing data folders and volumes...---$(RESET)"
+	sudo rm -rf $(FILES_FOLDER)
+	echo "$(YELLOW)Removing $(DATABASE) volume...$(RESET)"
+	sudo docker volume rm srcs_mariadb
+	echo "$(GREEN)$(DATABASE) volume removed successfully!$(RESET)"
+	echo "$(YELLOW)Removing $(WEBSITE) volume...$(RESET)"
+	sudo docker volume rm srcs_wordpress
+	echo "$(GREEN)$(WEBSITE) volume removed successfully!$(RESET)"
 
 re:
-	@make stop
-	@make start
+	make stop
+	make start
  
 .PHONY: start stop clean fclean re
 
